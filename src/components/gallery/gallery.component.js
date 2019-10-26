@@ -1,60 +1,55 @@
-import React from 'react';
-import { Grid } from '@material-ui/core';
+import React, { useState, useEffect } from 'react';
+import _ from 'lodash';
+import { Box } from '@material-ui/core';
 import Photograph from '../common/photograph/photograph.component';
-import MyPhoto from '../../assets/photos/IMG_20190901_175951.jpg';
-import MyPhoto2 from '../../assets/photos/IMG_20190901_184211.jpg';
 import styles from './gallery.module.css';
+import { photoList } from './gallery.photo';
 
 function Gallery(props) {
-  function random() {
-    return Math.random() * 2 + 1;
+  const [col1, setCol1] = useState([]);
+  const [col2, setCol2] = useState([]);
+  const [col3, setCol3] = useState([]);
+  const [col4, setCol4] = useState([]);
+
+  useEffect(() => {
+    // const chunkArr = _.chunk(
+    //   photoList, 2
+    // );
+    let index = 0;
+    const chunkArr = [];
+    const photolistLength = parseInt(photoList.length / 4, 10);
+    while (photoList[index]) {
+      const photoListPiece = photoList.slice(
+        index,
+        index + photolistLength,
+      );
+      chunkArr.push(photoListPiece);
+      index += photolistLength;
+    }
+    console.log(chunkArr);
+    setCol1(chunkArr[0]);
+    setCol2(chunkArr[1]);
+    setCol3(chunkArr[2]);
+    setCol4(chunkArr[3]);
+  }, []);
+
+  function displayPhoto(displayPhotoList) {
+    return (
+      <Box className={styles.flexColumn}>
+        {displayPhotoList.map(element => (
+          <Photograph src={element} />
+        ))}
+      </Box>
+    );
   }
+
   return (
-    <Photograph src={random() === 1 ? MyPhoto2 : MyPhoto2} />
-    // <Grid container className={styles.root}>
-    //   <Grid item md={3}>
-    //     <Photograph src={random() === 1 ? MyPhoto2 : MyPhoto} />
-    //   </Grid>
-    //   <Grid item md={3}>
-    //     <Photograph src={random() === 1 ? MyPhoto : MyPhoto2} />
-    //   </Grid>
-    //   <Grid item md={3}>
-    //     <Photograph src={random() === 1 ? MyPhoto : MyPhoto2} />
-    //   </Grid>
-    //   <Grid item md={3}>
-    //     <Photograph src={random() === 1 ? MyPhoto : MyPhoto2} />
-    //   </Grid>
-    //   <Grid item md={3}>
-    //     <Photograph src={random() === 1 ? MyPhoto : MyPhoto2} />
-    //   </Grid>
-    //   <Grid item md={3}>
-    //     <Photograph src={random() === 1 ? MyPhoto : MyPhoto2} />
-    //   </Grid>
-    //   <Grid item md={3}>
-    //     <Photograph src={random() === 1 ? MyPhoto : MyPhoto2} />
-    //   </Grid>
-    //   <Grid item md={3}>
-    //     <Photograph src={random() === 1 ? MyPhoto : MyPhoto2} />
-    //   </Grid>
-    //   <Grid item md={3}>
-    //     <Photograph src={random() === 1 ? MyPhoto : MyPhoto2} />
-    //   </Grid>
-    //   <Grid item md={3}>
-    //     <Photograph src={random() === 1 ? MyPhoto : MyPhoto2} />
-    //   </Grid>
-    //   <Grid item md={3}>
-    //     <Photograph src={random() === 1 ? MyPhoto : MyPhoto2} />
-    //   </Grid>
-    //   <Grid item md={3}>
-    //     <Photograph src={random() === 1 ? MyPhoto : MyPhoto2} />
-    //   </Grid>
-    //   <Grid item md={3}>
-    //     <Photograph src={random() === 1 ? MyPhoto : MyPhoto2} />
-    //   </Grid>
-    //   <Grid item md={3}>
-    //     <Photograph src={random() === 1 ? MyPhoto : MyPhoto2} />
-    //   </Grid>
-    // </Grid>
+    <Box component="div" className={styles.flexContainer} spacing={3}>
+      {displayPhoto(col1)}
+      {displayPhoto(col2)}
+      {displayPhoto(col3)}
+      {displayPhoto(col4)}
+    </Box>
   );
 }
 
