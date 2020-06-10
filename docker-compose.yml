@@ -1,0 +1,7 @@
+version: "3"
+
+services: 
+  memory-photo-management: 
+    build: "."
+    ports: 
+      - "3000:80"
